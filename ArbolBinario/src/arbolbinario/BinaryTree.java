@@ -1,27 +1,22 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
+
+
+
 package arbolbinario;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 import java.util.function.Consumer;
 
-/**
- *
- * @author Alexis
- */
 public class BinaryTree {
     private Node root;
     private int height;
-    
+
     public BinaryTree(int value) {
         this.root = new Node(value);
         this.height = 1;
     }
+
     public boolean contains(int value) {
         return containsValue(root, value);
     }
@@ -35,6 +30,7 @@ public class BinaryTree {
         }
         return containsValue(node.getLeftChild(), value) || containsValue(node.getRightChild(), value);
     }
+
     public Node getPadre(int valor) {
         return encontrarPadre(root, valor);
     }
@@ -63,9 +59,51 @@ public class BinaryTree {
             height = calculateHeight(root);
         }
     }
-    public Node getRoot(){
+
+    public void deleteNode(int value) {
+        root = delete(root, value);
+        if (root != null) {
+            height = calculateHeight(root);
+        } else {
+            height = 0; // El árbol está vacío
+        }
+    }
+
+    private Node delete(Node node, int value) {
+        if (node == null) {
+            return null;
+        }
+
+        if (value < node.getValue()) {
+            node.setLeftChild(delete(node.getLeftChild(), value));
+        } else if (value > node.getValue()) {
+            node.setRightChild(delete(node.getRightChild(), value));
+        } else {
+            // Caso 1 y Caso 2: Nodo con 0 o 1 hijo
+            if (node.getLeftChild() == null) {
+                return node.getRightChild();
+            } else if (node.getRightChild() == null) {
+                return node.getLeftChild();
+            }
+
+            // Caso 3: Nodo con 2 hijos
+            node.setValue(findMin(node.getRightChild()).getValue());
+            node.setRightChild(delete(node.getRightChild(), node.getValue()));
+        }
+        return node;
+    }
+
+    private Node findMin(Node node) {
+        while (node.getLeftChild() != null) {
+            node = node.getLeftChild();
+        }
+        return node;
+    }
+
+    public Node getRoot() {
         return root;
     }
+
     private int calculateHeight(Node node) {
         if (node == null) {
             return 0;
@@ -78,7 +116,6 @@ public class BinaryTree {
     public int getHeight() {
         return height;
     }
-
 
     public void printTreeByLevels() {
         if (root == null) {
@@ -107,6 +144,7 @@ public class BinaryTree {
             }
         }
     }
+
     private void delay() {
         try {
             Thread.sleep(300); // Delay fijo de 300ms
@@ -114,6 +152,7 @@ public class BinaryTree {
             e.printStackTrace();
         }
     }
+
     public void traverseInOrder(Consumer<Node> action) {
         inOrder(root, action);
     }
@@ -126,7 +165,6 @@ public class BinaryTree {
             inOrder(node.getRightChild(), action);
         }
     }
- 
 
     public void traversePreOrder(Consumer<Node> action) {
         preOrder(root, action);
@@ -153,8 +191,38 @@ public class BinaryTree {
             delay(); // Delay de 300ms entre cada acción
         }
     }
+
+    // Métodos adicionales para devolver cadenas de los recorridos
+
+    public String traverseInOrderString() {
+        StringBuilder sb = new StringBuilder();
+        traverseInOrder(node -> {
+            sb.append(node.getValue()).append(" ");
+        });
+        return sb.toString().trim();
+    }
+
+    public String traversePreOrderString() {
+        StringBuilder sb = new StringBuilder();
+        traversePreOrder(node -> {
+            sb.append(node.getValue()).append(" ");
+        });
+        return sb.toString().trim();
+    }
+
+    public String traversePostOrderString() {
+        StringBuilder sb = new StringBuilder();
+        traversePostOrder(node -> {
+            sb.append(node.getValue()).append(" ");
+        });
+        return sb.toString().trim();
+    }
+
     @Override
     public String toString() {
-        return "BinaryTree{" + "root=" + root + ", height=" + height + '}';
+        return "BinaryTree{" +
+                "root=" + root +
+                ", height=" + height +
+                '}';
     }
 }

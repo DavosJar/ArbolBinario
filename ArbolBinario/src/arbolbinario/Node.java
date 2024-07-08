@@ -1,13 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package arbolbinario;
 
-/**
- *
- * @author Alexis
- */
 public class Node {
 
     private int value;
@@ -34,6 +26,7 @@ public class Node {
         }
         // Si el valor es igual, no se hace nada, se ignora el nodo duplicado.
     }
+    
     public int getValue() {
         return value;
     }
@@ -45,10 +38,23 @@ public class Node {
     public Node getRightChild() {
         return rightChild;
     }
+    
     @Override
     public String toString() {
         return "Nodo{" + "Valor = " + value + '}';
     }
+
     
-    
+
+    public void setValue(int value) {
+        this.value = value;
+    }
+
+    public void setRightChild(Node rightChild) {
+        this.rightChild = rightChild;
+    }
+
+    public void setLeftChild(Node leftChild) {
+        this.leftChild = leftChild;
+    }
 }

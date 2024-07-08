@@ -6,16 +6,13 @@ package GUI;
 
 import arbolbinario.BinaryTree;
 import arbolbinario.Node;
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JLabel;
-import java.awt.event.ActionEvent;
+import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingWorker;
 
@@ -28,7 +25,7 @@ import javax.swing.SwingWorker;
 public class ArbolFrame extends javax.swing.JFrame {
 
     private BinaryTree arbol;
-    private Node node;// Para almacenar el árbol binario creado
+    // Para almacenar el árbol binario creado
 
     public ArbolFrame() {
         initComponents();
@@ -54,9 +51,10 @@ public class ArbolFrame extends javax.swing.JFrame {
         postOrderBtn = new javax.swing.JButton();
         InOrderBtn = new javax.swing.JButton();
         resetBtn = new javax.swing.JButton();
+        delNodo = new javax.swing.JButton();
         clearBtn = new javax.swing.JButton();
-        clsBtn = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
+        closeBtn = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
 
         nodoPanel.setBackground(new java.awt.Color(0, 0, 0));
         nodoPanel.setMaximumSize(new java.awt.Dimension(125, 125));
@@ -77,7 +75,6 @@ public class ArbolFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(51, 204, 255));
-        setMaximumSize(new java.awt.Dimension(3840, 2160));
         setMinimumSize(new java.awt.Dimension(400, 390));
         setName("VentanaRaiz"); // NOI18N
         setUndecorated(true);
@@ -93,7 +90,7 @@ public class ArbolFrame extends javax.swing.JFrame {
         );
         arbolPanelLayout.setVerticalGroup(
             arbolPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 706, Short.MAX_VALUE)
+            .addGap(0, 640, Short.MAX_VALUE)
         );
 
         btnPanel.setBackground(new java.awt.Color(196, 250, 229));
@@ -169,6 +166,17 @@ public class ArbolFrame extends javax.swing.JFrame {
             }
         });
 
+        delNodo.setText("Eliminar Nodo");
+        delNodo.setMaximumSize(new java.awt.Dimension(100, 60));
+        delNodo.setMinimumSize(new java.awt.Dimension(100, 60));
+        delNodo.setPreferredSize(new java.awt.Dimension(150, 60));
+        delNodo.setRolloverEnabled(false);
+        delNodo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                delNodoActionPerformed(evt);
+            }
+        });
+
         clearBtn.setText("Limpiar");
         clearBtn.setMaximumSize(new java.awt.Dimension(100, 60));
         clearBtn.setMinimumSize(new java.awt.Dimension(100, 60));
@@ -180,16 +188,10 @@ public class ArbolFrame extends javax.swing.JFrame {
             }
         });
 
-        clsBtn.setText("Cerrar");
-        clsBtn.addActionListener(new java.awt.event.ActionListener() {
+        closeBtn.setText("Cerrar");
+        closeBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                clsBtnActionPerformed(evt);
-            }
-        });
-
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                closeBtnActionPerformed(evt);
             }
         });
 
@@ -200,7 +202,6 @@ public class ArbolFrame extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, btnPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(btnPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jTextField1)
                     .addComponent(preOrderBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(postOrderBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE)
                     .addComponent(InOrderBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -208,7 +209,8 @@ public class ArbolFrame extends javax.swing.JFrame {
                     .addComponent(clearBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(initBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(addBtn1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(clsBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(closeBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(delNodo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         btnPanelLayout.setVerticalGroup(
@@ -227,13 +229,16 @@ public class ArbolFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(resetBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(delNodo, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(clearBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(12, 12, 12)
-                .addComponent(jTextField1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(clsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 185, Short.MAX_VALUE)
+                .addComponent(closeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
+
+        jLabel2.setBackground(new java.awt.Color(255, 255, 204));
+        jLabel2.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -242,12 +247,18 @@ public class ArbolFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(btnPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(arbolPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(arbolPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(btnPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 706, Short.MAX_VALUE)
-            .addComponent(arbolPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(arbolPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
@@ -255,34 +266,41 @@ public class ArbolFrame extends javax.swing.JFrame {
 
     private void preOrderBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_preOrderBtnActionPerformed
         new SwingWorker<Void, Node>() {
-    @Override
-    protected Void doInBackground() throws Exception {
-        arbol.traversePreOrder(node -> {
-            publish(node); // Publicar el nodo actual para el procesamiento en process()
-        });
-        return null;
-    }
+        StringBuilder traversalResult = new StringBuilder();
 
-    @Override
-    protected void process(List<Node> nodes) {
-        for (Node node : nodes) {
-            // Buscar el JLabel correspondiente al valor del nodo
-            Component[] components = arbolPanel.getComponents();
-            for (Component component : components) {
-                if (component instanceof JLabel) {
-                    JLabel label = (JLabel) component;
-                    if (label.getText().equals(String.valueOf(node.getValue()))) {
-                        // Cambiar el color del fondo a rojo
-                        label.setBackground(Color.RED);
-                        label.setOpaque(true); // Permitir que el fondo sea visible
-                        arbolPanel.revalidate(); // Revalidar el panel para actualizar la interfaz
-                        arbolPanel.repaint(); // Repintar el panel para asegurar que los cambios sean visibles
+        @Override
+        protected Void doInBackground() throws Exception {
+            arbol.traversePreOrder(node -> {
+                publish(node); // Publicar el nodo actual para el procesamiento en process()
+            });
+            return null;
+        }
+
+        @Override
+        protected void process(List<Node> nodes) {
+            for (Node node : nodes) {
+                // Buscar el JLabel correspondiente al valor del nodo
+                Component[] components = arbolPanel.getComponents();
+                for (Component component : components) {
+                    if (component instanceof JLabel label) {
+                        if (label.getText().equals(String.valueOf(node.getValue()))) {
+                            // Cambiar el color del fondo a rojo si no está rojo ya
+                            if (!label.getBackground().equals(Color.RED)) {
+                                label.setBackground(Color.RED);
+                                label.setOpaque(true); // Permitir que el fondo sea visible
+                                arbolPanel.revalidate(); // Revalidar el panel para actualizar la interfaz
+                                arbolPanel.repaint(); // Repintar el panel para asegurar que los cambios sean visibles
+                            }
+                        }
                     }
                 }
+                // Construir el recorrido en el StringBuilder
+                traversalResult.append(node.getValue()).append(" ");
             }
+            // Actualizar el JLabel con el recorrido actualizado
+            jLabel2.setText(traversalResult.toString().trim());
         }
-    }
-}.execute();
+    }.execute();
     }//GEN-LAST:event_preOrderBtnActionPerformed
 
     private void initBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_initBtnActionPerformed
@@ -334,39 +352,48 @@ public class ArbolFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_initBtnActionPerformed
 
     private void postOrderBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_postOrderBtnActionPerformed
-    new SwingWorker<Void, Node>() {
-        @Override
-        protected Void doInBackground() throws Exception {
-            arbol.traversePostOrder(node -> {
-                publish(node); // Publicar el nodo actual para el procesamiento en process()
-            });
-            return null;
-        }
+        new SwingWorker<Void, Node>() {
+            StringBuilder traversalResult = new StringBuilder();
 
-        @Override
-        protected void process(List<Node> nodes) {
-            for (Node node : nodes) {
-                // Buscar el JLabel correspondiente al valor del nodo
-                Component[] components = arbolPanel.getComponents();
-                for (Component component : components) {
-                    if (component instanceof JLabel) {
-                        JLabel label = (JLabel) component;
-                        if (label.getText().equals(String.valueOf(node.getValue()))) {
-                            // Cambiar el color del fondo a rojo
-                            label.setBackground(Color.RED);
-                            label.setOpaque(true); // Permitir que el fondo sea visible
-                            arbolPanel.revalidate(); // Revalidar el panel para actualizar la interfaz
-                            arbolPanel.repaint(); // Repintar el panel para asegurar que los cambios sean visibles
+            @Override
+            protected Void doInBackground() throws Exception {
+                arbol.traversePostOrder(node -> {
+                    publish(node); // Publicar el nodo actual para el procesamiento en process()
+                });
+                return null;
+            }
+
+            @Override
+            protected void process(List<Node> nodes) {
+                for (Node node : nodes) {
+                    // Buscar el JLabel correspondiente al valor del nodo
+                    Component[] components = arbolPanel.getComponents();
+                    for (Component component : components) {
+                        if (component instanceof JLabel label) {
+                            if (label.getText().equals(String.valueOf(node.getValue()))) {
+                                // Cambiar el color del fondo a rojo si no está rojo ya
+                                if (!label.getBackground().equals(Color.RED)) {
+                                    label.setBackground(Color.RED);
+                                    label.setOpaque(true); // Permitir que el fondo sea visible
+                                    arbolPanel.revalidate(); // Revalidar el panel para actualizar la interfaz
+                                    arbolPanel.repaint(); // Repintar el panel para asegurar que los cambios sean visibles
+                                }
+                            }
                         }
                     }
+                    // Construir el recorrido en el StringBuilder
+                    traversalResult.append(node.getValue()).append(" ");
                 }
+                // Actualizar el JLabel con el recorrido actualizado
+                jLabel2.setText(traversalResult.toString().trim());
             }
-        }
-    }.execute();
+        }.execute();
     }//GEN-LAST:event_postOrderBtnActionPerformed
-
+    
     private void InOrderBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InOrderBtnActionPerformed
         new SwingWorker<Void, Node>() {
+        StringBuilder traversalResult = new StringBuilder();
+
         @Override
         protected Void doInBackground() throws Exception {
             arbol.traverseInOrder(node -> {
@@ -381,18 +408,23 @@ public class ArbolFrame extends javax.swing.JFrame {
                 // Buscar el JLabel correspondiente al valor del nodo
                 Component[] components = arbolPanel.getComponents();
                 for (Component component : components) {
-                    if (component instanceof JLabel) {
-                        JLabel label = (JLabel) component;
+                    if (component instanceof JLabel label) {
                         if (label.getText().equals(String.valueOf(node.getValue()))) {
-                            // Cambiar el color del fondo a rojo
-                            label.setBackground(Color.RED);
-                            label.setOpaque(true); // Permitir que el fondo sea visible
-                            arbolPanel.revalidate(); // Revalidar el panel para actualizar la interfaz
-                            arbolPanel.repaint(); // Repintar el panel para asegurar que los cambios sean visibles
+                            // Cambiar el color del fondo a rojo si no está rojo ya
+                            if (!label.getBackground().equals(Color.RED)) {
+                                label.setBackground(Color.RED);
+                                label.setOpaque(true); // Permitir que el fondo sea visible
+                                arbolPanel.revalidate(); // Revalidar el panel para actualizar la interfaz
+                                arbolPanel.repaint(); // Repintar el panel para asegurar que los cambios sean visibles
+                            }
                         }
                     }
                 }
+                // Construir el recorrido en el StringBuilder
+                traversalResult.append(node.getValue()).append(" ");
             }
+            // Actualizar el JLabel con el recorrido actualizado
+            jLabel2.setText(traversalResult.toString().trim());
         }
     }.execute();
         
@@ -401,8 +433,7 @@ public class ArbolFrame extends javax.swing.JFrame {
     private void resetBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetBtnActionPerformed
         Component[] components = arbolPanel.getComponents();
         for (Component component : components) {
-            if (component instanceof JLabel) {
-                JLabel label = (JLabel) component;
+            if (component instanceof JLabel label) {
                 label.setBackground(Color.DARK_GRAY);
                 label.setForeground(Color.WHITE);
                 label.setOpaque(true);
@@ -413,140 +444,203 @@ public class ArbolFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_resetBtnActionPerformed
 
     private void clearBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearBtnActionPerformed
-       Component[] components = arbolPanel.getComponents();
-        for (Component component : components) {
-            if (component instanceof JLabel) {
-                arbolPanel.remove(component);
-            }
-        }
-        arbolPanel.revalidate();  // Revalida el panel para reflejar los cambios
-        arbolPanel.repaint(); 
+
+    // Eliminar todos los componentes del arbolPanel
+    arbolPanel.removeAll();
+    
+    // Revalidar y repintar el panel para reflejar los cambios
+    arbolPanel.revalidate();
+    arbolPanel.repaint();
+    
+    // Reiniciar cualquier estado asociado al árbol binario o arbolPanel
+    reiniciarEstadoArbolPanel();
+    }
+    private void reiniciarEstadoArbolPanel() {
+
+    
+
+    arbol = null; 
+    
+    
+    // Imprimir mensaje o realizar cualquier otra acción para confirmar reinicio
+    System.out.println("Estado del árbol y arbolPanel reiniciado.");   
     }//GEN-LAST:event_clearBtnActionPerformed
 
     private void addBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtn1ActionPerformed
-        if (arbol == null) {
-            JOptionPane.showMessageDialog(this, "No se puede agregar un nodo porque no hay un árbol creado.", "Árbol no existe", JOptionPane.WARNING_MESSAGE);
-            return;
+    if (arbol == null) {
+        JOptionPane.showMessageDialog(this, "No se puede agregar un nodo porque no hay un árbol creado.", "Árbol no existe", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    boolean valorValido = false;
+    while (!valorValido) {
+        String input = JOptionPane.showInputDialog(this, "Ingrese un valor entero:");
+
+        if (input == null) {
+            return; // El usuario ha cancelado el diálogo, salir del método
         }
 
-        boolean valorValido = false;
-        while (!valorValido) {
-            String input = JOptionPane.showInputDialog(this, "Ingrese un valor entero:");
+        try {
+            int valor = Integer.parseInt(input);
 
-            if (input == null) {
-                return; // El usuario ha cancelado el diálogo, salir del método
-            }
+            // Verificar si el valor ya existe en el árbol
+            if (arbol.contains(valor)) {
+                JOptionPane.showMessageDialog(this, "El valor ya existe en el árbol.", "Valor duplicado", JOptionPane.WARNING_MESSAGE);
+            } else {
+                // Insertar el nodo en el árbol
+                arbol.addNode(valor);
+                valorValido = true; // Marcar como válido para salir del bucle
 
-            try {
-                int valor = Integer.parseInt(input);
+                // Obtener el nodo padre del valor insertado
+                Node padre = arbol.getPadre(valor);
+                if (padre != null) {
+                    // Obtener la posición del JLabel del nodo padre
+                    Component[] components = arbolPanel.getComponents();
+                    int posXPadre = -1, posYPadre = -1;
+                    for (Component component : components) {
+                        if (component instanceof JLabel label) {
+                            if (label.getText().equals(String.valueOf(padre.getValue()))) {
+                                // Obtener la posición del nodo padre
+                                posXPadre = label.getX();
+                                posYPadre = label.getY();
+                                break;
+                            }
+                        }
+                    }
 
-                // Verificar si el valor ya existe en el árbol
-                if (arbol.contains(valor)) {
-                    JOptionPane.showMessageDialog(this, "El valor ya existe en el árbol.", "Valor duplicado", JOptionPane.WARNING_MESSAGE);
-                } else {
-                    // Insertar el nodo en el árbol
-                    arbol.addNode(valor);
-                    valorValido = true; // Marcar como válido para salir del bucle
+                    if (posXPadre != -1 && posYPadre != -1) {
+                        // Calcular la posición del nuevo nodo hijo
+                        int size = 50; // Tamaño del nodo
+                        int baseSpaceX = 400; // Espacio horizontal base entre nodos
+                        int baseSpaceY = 150; // Espacio vertical base entre niveles del árbol
 
-                    // Obtener el nodo padre del valor insertado
-                    Node padre = arbol.getPadre(valor);
-                    if (padre != null) {
-                        // Obtener la posición del JLabel del nodo padre
-                        Component[] components = arbolPanel.getComponents();
-                        int posXPadre = -1, posYPadre = -1;
+                        // Calcular nivel del nodo en el árbol
+                        int nivel = 1;
+                        Node current = padre;
+                        while (current != null) {
+                            nivel++;
+                            current = arbol.getPadre(current.getValue());
+                        }
+
+                        // Ajustar espacio horizontal y vertical en función del nivel
+                        int spaceX = baseSpaceX / nivel;
+                        int spaceY = baseSpaceY - (nivel * 10); // Reducir en menor medida la distancia vertical
+
+                        int posXHijo = posXPadre + (valor < padre.getValue() ? -spaceX : spaceX);
+                        int posYHijo = posYPadre + spaceY;
+
+                        // Asegurar que no se superponga con nodos existentes
                         for (Component component : components) {
-                            if (component instanceof JLabel) {
-                                JLabel label = (JLabel) component;
+                            if (component instanceof JLabel label) {
+                                if (!label.getText().equals(String.valueOf(padre.getValue()))) {
+                                    int labelX = label.getX();
+                                    int labelY = label.getY();
+                                    if (Math.abs(labelX - posXHijo) < size && Math.abs(labelY - posYHijo) < size) {
+                                        // Si hay superposición, ajustar la posición
+                                        posXHijo += size + spaceX;
+                                        posYHijo += size + spaceY;
+                                    }
+                                }
+                            }
+                        }
+
+                        // Crear JLabel con el valor ingresado
+                        JLabel nuevoLabel = new JLabel(String.valueOf(valor));
+                        nuevoLabel.setBackground(Color.DARK_GRAY); // Fondo negro
+                        nuevoLabel.setForeground(Color.WHITE); // Texto blanco
+                        nuevoLabel.setHorizontalAlignment(SwingConstants.CENTER); // Centrar horizontalmente
+                        nuevoLabel.setVerticalAlignment(SwingConstants.CENTER); // Centrar verticalmente
+                        nuevoLabel.setFont(new Font("Arial", Font.PLAIN, 25)); // Tamaño de letra 25
+                        nuevoLabel.setOpaque(true); // Permitir que el fondo sea visible
+
+                        // Ajustar el tamaño del JLabel a 50x50
+                        nuevoLabel.setBounds(posXHijo, posYHijo, size, size);
+
+                        // Agregar el JLabel al arbolPanel
+                        arbolPanel.add(nuevoLabel);
+                        arbolPanel.revalidate(); // Revalidar el panel para actualizar la interfaz
+                        arbolPanel.repaint(); // Repintar el panel para asegurar que los cambios sean visibles
+
+                        // Conectar los nodos
+                        JLabel padreLabel = null;
+                        for (Component component : components) {
+                            if (component instanceof JLabel label) {
                                 if (label.getText().equals(String.valueOf(padre.getValue()))) {
-                                    // Obtener la posición del nodo padre
-                                    posXPadre = label.getX();
-                                    posYPadre = label.getY();
+                                    padreLabel = label;
                                     break;
                                 }
                             }
                         }
 
-                        if (posXPadre != -1 && posYPadre != -1) {
-                            // Calcular la posición del nuevo nodo hijo
-                            int size = 50; // Tamaño del nodo
-                            int spaceX = 100; // Espacio horizontal entre nodos
-                            int spaceY = 150; // Espacio vertical entre niveles del árbol
+                        // Crear y agregar la línea de conexión entre el nodo padre y el nodo hijo
+                        if (padreLabel != null) {
+                            int x1 = padreLabel.getX() + padreLabel.getWidth() / 2;
+                            int y1 = padreLabel.getY() + padreLabel.getHeight();
+                            int x2 = nuevoLabel.getX() + nuevoLabel.getWidth() / 2;
+                            int y2 = nuevoLabel.getY();
 
-                            int posXHijo = posXPadre + (valor < padre.getValue() ? -spaceX : spaceX);
-                            int posYHijo = posYPadre + spaceY;
-
-                            // Asegurar que no se superponga con nodos existentes
-                            for (Component component : components) {
-                                if (component instanceof JLabel) {
-                                    JLabel label = (JLabel) component;
-                                    if (!label.getText().equals(String.valueOf(padre.getValue()))) {
-                                        int labelX = label.getX();
-                                        int labelY = label.getY();
-                                        if (Math.abs(labelX - posXHijo) < size && Math.abs(labelY - posYHijo) < size) {
-                                            // Si hay superposición, ajustar la posición
-                                            posXHijo += size + spaceX;
-                                            posYHijo += size + spaceY;
-                                        }
-                                    }
-                                }
-                            }
-                            JLabel padreLabel = null;
-                            for (Component component : components) {
-                                if (component instanceof JLabel) {
-                                    JLabel label = (JLabel) component;
-                                    if (label.getText().equals(String.valueOf(padre.getValue()))) {
-                                        padreLabel = label;
-                                        break;
-                                    }
-                                }
-                            }
-                            // Crear JLabel con el valor ingresado
-                            JLabel nuevoLabel = new JLabel(String.valueOf(valor));
-                            nuevoLabel.setBackground(Color.DARK_GRAY); // Fondo negro
-                            nuevoLabel.setForeground(Color.WHITE); // Texto blanco
-                            nuevoLabel.setHorizontalAlignment(SwingConstants.CENTER); // Centrar horizontalmente
-                            nuevoLabel.setVerticalAlignment(SwingConstants.CENTER); // Centrar verticalmente
-                            nuevoLabel.setFont(new Font("Arial", Font.PLAIN, 25)); // Tamaño de letra 25
-                            nuevoLabel.setOpaque(true); // Permitir que el fondo sea visible
-
-                            // Ajustar el tamaño del JLabel a 50x50
-                            nuevoLabel.setBounds(posXHijo, posYHijo, size, size);
-
-                            // Agregar el JLabel al arbolPanel
-                            arbolPanel.add(nuevoLabel);
-                            arbolPanel.revalidate(); // Revalidar el panel para actualizar la interfaz
-                            arbolPanel.repaint(); // Repintar el panel para asegurar que los cambios sean visibles
-                            conectarNodos(padreLabel, nuevoLabel);
-                            // Imprimir información del árbol por consola
-                            System.out.println("Árbol actualizado:\n" + arbol);
+                            Line line = new Line(x1, y1, x2, y2);
+                            line.setBounds(0, 0, arbolPanel.getWidth(), arbolPanel.getHeight());
+                            arbolPanel.add(line);
+                            arbolPanel.setComponentZOrder(line, 0); // Poner la línea en el fondo
+                            arbolPanel.revalidate();
+                            arbolPanel.repaint();
                         }
+
+                        // Imprimir información del árbol por consola
+                        System.out.println("Árbol actualizado:\n" + arbol);
                     }
                 }
-
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(this, "Por favor, ingrese un número entero válido.", "Error", JOptionPane.ERROR_MESSAGE);
             }
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese un número entero válido.", "Error", JOptionPane.ERROR_MESSAGE);
         }
+    }
     }//GEN-LAST:event_addBtn1ActionPerformed
 
-    private void clsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clsBtnActionPerformed
+    private void closeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeBtnActionPerformed
          System.exit(0); 
-    }//GEN-LAST:event_clsBtnActionPerformed
+    }//GEN-LAST:event_closeBtnActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        StringBuilder sb = new StringBuilder();
-        Component[] components = arbolPanel.getComponents();
+    private void delNodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delNodoActionPerformed
+        if (arbol == null) {
+        JOptionPane.showMessageDialog(this, "No se puede eliminar un nodo porque no hay un árbol creado.", "Árbol no existe", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
 
-        for (Component component : components) {
-            if (component instanceof JLabel) {
-                JLabel label = (JLabel) component;
-                sb.append(label.getText()).append(" ");
+    String input = JOptionPane.showInputDialog(this, "Ingrese el valor del nodo a eliminar:");
+
+    if (input == null) {
+        return; // El usuario ha cancelado el diálogo, salir del método
+    }
+
+    try {
+        int valor = Integer.parseInt(input);
+
+        // Verificar si el valor existe en el árbol
+        if (!arbol.contains(valor)) {
+            JOptionPane.showMessageDialog(this, "El valor no existe en el árbol.", "Valor no encontrado", JOptionPane.WARNING_MESSAGE);
+        } else {
+            // Eliminar el nodo del árbol
+            arbol.deleteNode(valor);
+            
+            // Actualizar la interfaz gráfica
+            arbolPanel.removeAll(); // Eliminar todos los componentes del panel
+            
+            // Volver a agregar los nodos actuales del árbol al panel
+            actualizarArbolPanel(arbol.getRoot(), arbolPanel.getWidth() / 2, 30, arbolPanel.getWidth() / 4, arbolPanel);
+
+            arbolPanel.revalidate(); // Revalidar el panel para actualizar la interfaz
+            arbolPanel.repaint(); // Repintar el panel para asegurar que los cambios sean visibles
+
+            // Imprimir información del árbol por consola
+            System.out.println("Árbol actualizado:\n" + arbol);
             }
+        } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Por favor, ingrese un número entero válido.", "Error", JOptionPane.ERROR_MESSAGE);
         }
-
-    jTextField1.setText(sb.toString().trim()); // Actualizar el texto del JTextField con los valores de los JLabel
-    
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_delNodoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -589,39 +683,50 @@ public class ArbolFrame extends javax.swing.JFrame {
     private javax.swing.JPanel arbolPanel;
     private javax.swing.JPanel btnPanel;
     private javax.swing.JButton clearBtn;
-    private javax.swing.JButton clsBtn;
+    private javax.swing.JButton closeBtn;
+    private javax.swing.JButton delNodo;
     private javax.swing.JButton initBtn;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel jLabel2;
     private GUI.PanelRound nodoPanel;
     private javax.swing.JButton postOrderBtn;
     private javax.swing.JButton preOrderBtn;
     private javax.swing.JButton resetBtn;
     // End of variables declaration//GEN-END:variables
+private void actualizarArbolPanel(Node nodo, int x, int y, int horizontalSpacing, JPanel arbolPanel) {
+    if (nodo != null) {
+        JLabel nodoLabel = new JLabel(String.valueOf(nodo.getValue()));
+        nodoLabel.setBackground(Color.DARK_GRAY); // Fondo negro
+        nodoLabel.setForeground(Color.WHITE); // Texto blanco
+        nodoLabel.setHorizontalAlignment(SwingConstants.CENTER); // Centrar horizontalmente
+        nodoLabel.setVerticalAlignment(SwingConstants.CENTER); // Centrar verticalmente
+        nodoLabel.setFont(new Font("Arial", Font.PLAIN, 25)); // Tamaño de letra 25
+        nodoLabel.setOpaque(true); // Permitir que el fondo sea visible
 
-    private void updateTree(BinaryTree createdTree) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-    private void conectarNodos(JLabel padre, JLabel hijo) {
-    // Obtener coordenadas del centro del JLabel padre y del hijo
-    int xPadre = padre.getX() + padre.getWidth() / 2;
-    int yPadre = padre.getY() + padre.getHeight();
-    int xHijo = hijo.getX() + hijo.getWidth() / 2;
-    int yHijo = hijo.getY();
+        // Ajustar el tamaño del JLabel a 50x50
+        nodoLabel.setBounds(x, y, 50, 50);
 
-    // Dibujar línea entre el padre y el hijo
-    arbolPanel.add(new JLabel() {
-        @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            Graphics2D g2d = (Graphics2D) g;
-            g2d.setStroke(new BasicStroke(2)); // Grosor de la línea
-            g2d.setColor(Color.BLACK); // Color de la línea
-            g2d.drawLine(xPadre, yPadre, xHijo, yHijo);
+        arbolPanel.add(nodoLabel);
+
+        // Conectar con el nodo izquierdo
+        if (nodo.getLeftChild() != null) {
+            int childX = x - horizontalSpacing;
+            int childY = y + 100; // Distancia vertical entre niveles
+            actualizarArbolPanel(nodo.getLeftChild(), childX, childY, horizontalSpacing / 2, arbolPanel);
+            conectarNodos(nodoLabel, new JLabel(String.valueOf(nodo.getLeftChild().getValue())));
         }
-    });
-    }
-    
-}
-    
 
+        // Conectar con el nodo derecho
+        if (nodo.getRightChild() != null) {
+            int childX = x + horizontalSpacing;
+            int childY = y + 100; // Distancia vertical entre niveles
+            actualizarArbolPanel(nodo.getRightChild(), childX, childY, horizontalSpacing / 2, arbolPanel);
+            conectarNodos(nodoLabel, new JLabel(String.valueOf(nodo.getRightChild().getValue())));
+        }
+    }
+}
+private void conectarNodos(JLabel parent, JLabel child) {
+    Line line = new Line(parent.getX() + parent.getWidth() / 2, parent.getY() + parent.getHeight() / 2, child.getX() + child.getWidth() / 2, child.getY() + child.getHeight() / 2);
+    arbolPanel.add(line);
+}
+}
