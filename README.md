@@ -3,6 +3,10 @@
 
 # Aplicación de Visualización de Árbol Binario
 
+## Modelo
+DIagrama de clase
+![1](https://github.com/DavosJar/ArbolBinario/assets/166522585/686e188e-e949-43e8-82cc-5d6c19241270)
+
 Esta aplicación Java Swing visualiza algoritmos de recorrido de árboles binarios utilizando JLabels para representar los nodos.
 Soporta tres métodos de recorrido: inorden, preorden y postorden.
 
